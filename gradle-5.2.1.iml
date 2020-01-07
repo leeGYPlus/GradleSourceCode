@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/announce" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/antlr" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/base-services" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/base-services-groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build-cache" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build-cache-http" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build-cache-packaging" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build-comparison" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build-init" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build-option" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/build-profile" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/cli" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/code-quality" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/composite-builds" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core-api" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/dependency-management" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/diagnostics" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ear" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/execution" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/files" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ide" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ide-native" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ide-play" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/installation-beacon" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/internal-android-performance-testing" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/internal-integ-testing" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/internal-performance-testing" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/internal-testing" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/ivy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jacoco" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/javascript" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/jvm-services" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/language-groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/language-java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/language-jvm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/language-native" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/language-scala" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/launcher" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/logging" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/maven" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/messaging" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/model-core" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/model-groovy" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/native" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/osgi" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/persistent-cache" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/platform-base" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/platform-jvm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/platform-native" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/platform-play" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugin-development" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugin-use" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/plugins" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/process-services" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/publish" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/reporting" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources-gcs" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources-http" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources-s3" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/resources-sftp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/scala" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/signing" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/snapshots" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/test-kit" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/testing-base" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/testing-junit-platform" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/testing-jvm" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/testing-native" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tooling-api" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tooling-api-builders" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tooling-native" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/version-control" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/workers" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/wrapper" isTestSource="false" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>
