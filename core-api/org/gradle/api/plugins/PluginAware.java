@@ -23,7 +23,7 @@ import org.gradle.internal.HasInternalProtocol;
 import java.util.Map;
 
 /**
- * Something that can have plugins applied to it.
+ * Something that can have plugins applied to it.  通过 PluginAware 来应用插件。
  * <p>
  * The {@link #getPluginManager() plugin manager} can be used for applying and detecting whether plugins have been applied.
  * <p>

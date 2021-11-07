@@ -144,18 +144,22 @@ public class DefaultGradleLauncher implements GradleLauncher {
 
     private void doBuildStages(Stage upTo) {
         try {
+            // TODO: 2021/6/17 解析 setting 文件
             loadSettings();
             if (upTo == Stage.LoadSettings) {
                 return;
             }
+            // 
             configureBuild();
             if (upTo == Stage.Configure) {
                 return;
             }
+            // TODO: 2021/6/17 构建 task 依赖图 
             constructTaskGraph();
             if (upTo == Stage.TaskGraph) {
                 return;
             }
+            // TODO: 2021/6/17 执行 Task 
             runTasks();
             if (upTo == Stage.RunTasks) {
                 return;
@@ -197,6 +201,7 @@ public class DefaultGradleLauncher implements GradleLauncher {
 
     private void loadSettings() {
         if (stage == null) {
+            // TODO: 2021/5/31 开始构建 回调  -- buildStarted
             buildListener.buildStarted(gradle);
 
             buildOperationExecutor.run(new LoadBuild());
@@ -271,6 +276,7 @@ public class DefaultGradleLauncher implements GradleLauncher {
     private class LoadBuild implements RunnableBuildOperation {
         @Override
         public void run(BuildOperationContext context) {
+            // TODO: 2021/5/31 执行 init.gradle 脚本 
             // Evaluate init scripts
             initScriptHandler.executeScripts(gradle);
             // Build `buildSrc`, load settings.gradle, and construct composite (if appropriate)
@@ -302,6 +308,7 @@ public class DefaultGradleLauncher implements GradleLauncher {
             buildConfigurer.configure(gradle);
 
             if (!isConfigureOnDemand()) {
+                // TODO: 2021/6/17  projectsEvaluated 回调
                 projectsEvaluated();
             }
 
@@ -337,6 +344,10 @@ public class DefaultGradleLauncher implements GradleLauncher {
             }
 
             final TaskExecutionGraphInternal taskGraph = gradle.getTaskGraph();
+            /**
+             * {@link org.gradle.execution.taskgraph.DefaultTaskExecutionGraph#populate}
+             */
+            // TODO: 2021/6/17 生成 task graph 图 
             taskGraph.populate();
 
             includedBuildControllers.populateTaskGraphs();

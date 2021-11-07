@@ -43,11 +43,15 @@ import java.util.Set;
 /**
  * <p>A <code>Task</code> represents a single atomic piece of work for a build, such as compiling classes or generating
  * javadoc.</p>
+ * Task 是 Gradle 构建的原子操作。
+ *
  *
  * <p>Each task belongs to a {@link Project}. You can use the various methods on {@link
  * org.gradle.api.tasks.TaskContainer} to create and lookup task instances. For example, {@link
  * org.gradle.api.tasks.TaskContainer#create(String)} creates an empty task with the given name. You can also use the
  * {@code task} keyword in your build file: </p>
+ *
+ * 可以使用 TaskContainer 新建、查找 Task，可以使用 TaskContainer#create 方法创建 Task，也可以在 build.gradle 中直接使用 task 关键字创建 Task。
  * <pre>
  * task myTask
  * task myTask { configure closure }
@@ -60,15 +64,23 @@ import java.util.Set;
  * and the task's name. Path elements are separated using the {@value org.gradle.api.Project#PATH_SEPARATOR}
  * character.</p>
  *
+ * 每个任务都有一个名称 (可用于引用其所属项目中的任务) 和一个完全限定路径 (在所有项目中的所有任务中都是唯一的)。路径是所属项目的路径和任务的名称的连接,使用冒号连接，比如  :app:customtask
+ *
+ *
  * <h3>Task Actions</h3>
  *
  * <p>A <code>Task</code> is made up of a sequence of {@link Action} objects. When the task is executed, each of the
  * actions is executed in turn, by calling {@link Action#execute}. You can add actions to a task by calling {@link
  * #doFirst(Action)} or {@link #doLast(Action)}.</p>
  *
+ * 一个任务由一系列的 Action 对象组成。当 Task 执行时，Task 中的 Action 会调用 Action#execute 依次执行。可以通过 doFirst 和 doLast
+ * 向 Task 添加 Action
+ *
  * <p>Groovy closures can also be used to provide a task action. When the action is executed, the closure is called with
  * the task as parameter.  You can add action closures to a task by calling {@link #doFirst(groovy.lang.Closure)} or
  * {@link #doLast(groovy.lang.Closure)}.</p>
+ *
+ * Groovy 闭包也可以用来向 Task 提供 Action，当该 Action 执行时，闭包会将该 Task 作为参数。
  *
  * <p>There are 2 special exceptions which a task action can throw to abort execution and continue without failing the
  * build. A task action can abort execution of the action and continue to the next action of the task by throwing a
@@ -76,26 +88,37 @@ import java.util.Set;
  * next task by throwing a {@link org.gradle.api.tasks.StopExecutionException}. Using these exceptions allows you to
  * have precondition actions which skip execution of the task, or part of the task, if not true.</p>
  *
- * <a name="dependencies"></a><h3>Task Dependencies and Task Ordering</h3>
+ * 两个异常：
+ *      StopActionException：中断本 Action，执行下一个 Action
+ *       StopExecutionException：中断本 Task，执行下一个 Task
+ *  使用以上两个异常可以做到中断本次 Action 或者 Task 执行
+ *
+ * <a name="dependencies"></a><h3>Task Dependencies and Task Ordering(Task 依赖和顺序)</h3>
  *
  * <p>A task may have dependencies on other tasks or might be scheduled to always run after another task.
  * Gradle ensures that all task dependencies and ordering rules are honored when executing tasks, so that the task is executed after
  * all of its dependencies and any "must run after" tasks have been executed.</p>
+ *
+ * <p>Task 可以依赖其他 Task，或者在某个 Task 之后执行。在执行任务时，Gradle 会确保所有的任务依赖项和顺序规则都被遵守，所以任务会在所有依赖项和 “必须在之后运行” 的任务执行完之后才执行</p>
  *
  * <p>Dependencies to a task are controlled using {@link #dependsOn(Object...)} or {@link #setDependsOn(Iterable)},
  * and {@link #mustRunAfter(Object...)}, {@link #setMustRunAfter(Iterable)}, {@link #shouldRunAfter(Object...)} and
  * {@link #setShouldRunAfter(Iterable)} are used to specify ordering between tasks. You can use objects of any of
  * the following types to specify dependencies and ordering:</p>
  *
+ * <p>{@link #dependsOn(Object...)}、{@link #setDependsOn(Iterable)}、 {@link #mustRunAfter(Object...)} 可以用来配置 Task 的依赖项，
+ * {@link #setMustRunAfter(Iterable)}, {@link #shouldRunAfter(Object...)}、{@link #setShouldRunAfter(Iterable)} 可以用来指定 Tassk 间的顺序。您可以使用下列任何类型的对象来指定依赖项和顺序，以上方法的参数可以为以下类型：</p>
+ *
  * <ul>
  *
- * <li>A {@code String}, {@code CharSequence} or {@code groovy.lang.GString} task path or name. A relative path is interpreted relative to the task's {@link Project}. This
- * allows you to refer to tasks in other projects.</li>
+ * <li>A {@code String}, {@code CharSequence} or {@code groovy.lang.GString} task path or name. A relative path is interpreted relative to the task's {@link Project}. This allows you to refer to tasks in other projects. Task 的路径或者名称，可以通过以上两者在其他项目中引用 Task</li>
  *
- * <li>A {@link Task}.</li>
+ * <li>A {@link Task}. Task </li>
  *
  * <li>A closure. The closure may take a {@code Task} as parameter. It may return any of the types listed here. Its
- * return value is recursively converted to tasks. A {@code null} return value is treated as an empty collection.</li>
+ * return value is recursively converted to tasks. A {@code null} return value is treated as an empty collection.
+ * 翻译: 闭包。该闭包的参数可能为 Task，它可以返回这里列出的任何类型。它的返回值被递归转换为任务。{@code null} 返回值将被视为空集合。
+ * </li>
  *
  * <li>A {@link TaskDependency} object.</li>
  *
@@ -119,7 +142,7 @@ import java.util.Set;
  *
  * <h3>Using a Task in a Build File</h3>
  *
- * <a name="properties"></a> <h4>Dynamic Properties</h4>
+ * <a name="properties"></a> <h4>Dynamic Properties（动态属性）</h4>
  *
  * <p>A {@code Task} has 4 'scopes' for properties. You can access these properties by name from the build file or by
  * calling the {@link #property(String)} method. You can change the value of these properties by calling the {@link #setProperty(String, Object)} method.</p>
@@ -221,6 +244,8 @@ public interface Task extends Comparable<Task>, ExtensionAware {
     /**
      * <p>Returns a {@link TaskDependency} which contains all the tasks that this task depends on.</p>
      *
+     * 获取该 Task 依赖的所有 Task。
+     *
      * @return The dependencies of this task. Never returns null.
      */
     @Internal
@@ -256,6 +281,8 @@ public interface Task extends Comparable<Task>, ExtensionAware {
      * <p>Execute the task only if the given closure returns true.  The closure will be evaluated at task execution
      * time, not during configuration.  The closure will be passed a single parameter, this task. If the closure returns
      * false, the task will be skipped.</p>
+     *
+     * 当闭包为 True 时，才会执行该 Task，闭包中的内容会在 Task 执行时计算，而不是在配置阶段，该闭包的参数为该 Task 。
      *
      * <p>You may add multiple such predicates. The task is skipped if any of the predicates return false.</p>
      *

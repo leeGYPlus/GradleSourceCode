@@ -62,27 +62,33 @@ import java.util.concurrent.Callable;
  * <p>This interface is the main API you use to interact with Gradle from your build file. From a <code>Project</code>,
  * you have programmatic access to all of Gradle's features.</p>
  *
+ * Project 接口是通过 build 文件与 Gradle 交互的主要 API，通过 Project 可以以编程的方式访问 Gradle 的所有功能。
+ *
  * <h3>Lifecycle</h3>
  *
  * <p>There is a one-to-one relationship between a <code>Project</code> and a <code>{@value #DEFAULT_BUILD_FILE}</code>
  * file. During build initialisation, Gradle assembles a <code>Project</code> object for each project which is to
  * participate in the build, as follows:</p>
  *
+ * Project 和 build.gradle 是一一对应的，在构建初期 Gradle 为每个参与构建的项目组装一个 Project 对象，具体步骤如下：
  * <ul>
  *
- * <li>Create a {@link org.gradle.api.initialization.Settings} instance for the build.</li>
+ * <li>Create a {@link org.gradle.api.initialization.Settings} instance for the build.</li>  1. 为本次构建创建 Settings 对象
  *
  * <li>Evaluate the <code>{@value org.gradle.api.initialization.Settings#DEFAULT_SETTINGS_FILE}</code> script, if
- * present, against the {@link org.gradle.api.initialization.Settings} object to configure it.</li>
+ * present, against the {@link org.gradle.api.initialization.Settings} object to configure it.</li> 2. 评估 setting.gradle 脚本，如果该脚本存在，依据该脚本对 Setting 对象进行配置
  *
  * <li>Use the configured {@link org.gradle.api.initialization.Settings} object to create the hierarchy of
- * <code>Project</code> instances.</li>
+ * <code>Project</code> instances.</li> 3. 使用配置的 Setting 对象创建 Project 对象层次结构(可能存在多个 build.gradle，所以可能存在多个 Project，不过这些 Project 间存在层次结构)
  *
  * <li>Finally, evaluate each <code>Project</code> by executing its <code>{@value #DEFAULT_BUILD_FILE}</code> file, if
  * present, against the project. The projects are evaluated in breadth-wise order, such that a project is evaluated
  * before its child projects. This order can be overridden by calling <code>{@link #evaluationDependsOnChildren()}</code> or by adding an
  * explicit evaluation dependency using <code>{@link #evaluationDependsOn(String)}</code>.</li>
- *
+ *  4. 最后，通过针对项目执行其文件(build.gradle)（如果存在）来评估每个 Project。这些 Project 按照广度顺序进行评估，基于此，一个 Project 在其子 Project 之前执行评估过程，
+ *    可以通过一下方法覆盖以上顺序：
+ *     * 调用 evaluationDependsOnChildren()
+ *     * 或通过使用 evaluationDependsOn(String) 显式添加评估依赖项
  * </ul>
  *
  * <h3>Tasks</h3>
@@ -91,6 +97,12 @@ import java.util.concurrent.Callable;
  * as compiling classes, or running unit tests, or zipping up a WAR file. You add tasks to a project using one of the
  * {@code create()} methods on {@link TaskContainer}, such as {@link TaskContainer#create(String)}.  You can locate existing
  * tasks using one of the lookup methods on {@link TaskContainer}, such as {@link org.gradle.api.tasks.TaskCollection#getByName(String)}.</p>
+ *
+ * Project 本质上是 Task 对象集合，每个 Task 执行一些基本的工作，比如编译 class、执行单元测试、压缩 war 文件。TaskContainer 中有一系列的 create 方法可以实现添加 Task 到 Project 中，比如 TaskContainer#create(String),同时 TaskContainer 中也存在用户获取 Task 的 API，比如 TaskCollection#getByName(String)。
+ *
+ * TaskContainer = project.getTasks()
+ *
+ *
  *
  * <h3>Dependencies</h3>
  *
@@ -103,16 +115,30 @@ import java.util.concurrent.Callable;
  * manage the artifacts. The {@link org.gradle.api.artifacts.dsl.RepositoryHandler} returned by {@link
  * #getRepositories()} method to manage the repositories.</p>
  *
+ * 一般来说，Project 为了执行工作，需要有一系列的依赖，此外，一个项目通常会 产生 许多其他项目可以使用的工件(artifacts)。
+ * 这些依赖项可以被分类 configuration，并且这些依赖项可以从 存储库 中获取，或者上传到存储库上。
+ * 可以通过 getConfigurations() 获取的 ConfigurationContainer 对象管理配置（configurations）
+ * 通过 getDependencies() 获取到 DependencyHandler 对象管理一系列的依赖项（dependencies）。
+ * 通过 getArtifacts() 获取的 ArtifactHandler 对象管理工件（artifacts）。
+ * 通过 getRepositories() 获取的 RepositoryHandler 对象管理存储库（repositories）。
+ *
+ *
+ *
  * <h3>Multi-project Builds</h3>
  *
  * <p>Projects are arranged into a hierarchy of projects. A project has a name, and a fully qualified path which
  * uniquely identifies it in the hierarchy.</p>
+ *
+ * 所有的 Project 按照层次结构排列，一个 Project 拥有一个 Name、一个唯一限定的路径。
  *
  * <h3>Plugins</h3>
  *
  * <p>
  * Plugins can be used to modularise and reuse project configuration.
  * Plugins can be applied using the {@link PluginAware#apply(java.util.Map)} method, or by using the {@link org.gradle.plugin.use.PluginDependenciesSpec} plugins script block.
+ *
+ *
+ * 插件可用于 模块化 和重用项目配置，可以通过 PluginAware#apply(java.util.Map) 方法 或者使用 PluginDependenciesSpec 脚本来应用 Plugin
  * </p>
  *
  * <a name="properties"></a> <h3>Properties</h3>
@@ -120,6 +146,10 @@ import java.util.concurrent.Callable;
  * <p>Gradle executes the project's build file against the <code>Project</code> instance to configure the project. Any
  * property or method which your script uses is delegated through to the associated <code>Project</code> object.  This
  * means, that you can use any of the methods and properties on the <code>Project</code> interface directly in your script.
+ *
+ * Gradle 会执行 Project 对应的 build.gradle 文件来配置 Project实例对象。脚本中使用的任何属性或方法都 被委托给 关联的 Project 对象。(这句话很重要)
+ * 这意味着，可以的脚本中使用 Project 的任何属性和方法。
+ *
  * </p><p>For example:
  * <pre>
  * defaultTasks('some-task')  // Delegates to Project.defaultTasks()
@@ -129,8 +159,13 @@ import java.util.concurrent.Callable;
  * script clearer in some cases. For example, you could use <code>project.name</code> rather than <code>name</code> to
  * access the project's name.</p>
  *
+ * 在脚本中通过 project 属性 可以获取 Project 的实例对象，在一定程度上使脚本更加清晰，比如可以 project.name 而不是 name 获取 Project 的名字，相较于 name 来说，project.name 含义更加清晰。
+ *
  * <p>A project has 5 property 'scopes', which it searches for properties. You can access these properties by name in
  * your build file, or by calling the project's {@link #property(String)} method. The scopes are:</p>
+ *
+ * Project 有 5 个属性“范围”，不同范围内有不同的属性。 可以在构建文件中通过 name 或调用 Project 的方法： {@link #property(String)} 来访问这些属性。
+ *
  *
  * <ul>
  *
@@ -139,26 +174,45 @@ import java.util.concurrent.Callable;
  * <code>rootProject</code> property.  The properties of this scope are readable or writable depending on the presence
  * of the corresponding getter or setter method.</li>
  *
+ * Project 对象本身，它的范围包括 ** 所有 Project 实现类** 中声明的 getter 和 setter 属性，比如 getRootProject 等价于在脚本中使用 rootProject 属性。属性的可读、可写取决于相应的 setter 和 getter 方法
+ *
  * <li>The <em>extra</em> properties of the project.  Each project maintains a map of extra properties, which
  * can contain any arbitrary name -&gt; value pair.  Once defined, the properties of this scope are readable and writable.
  * See <a href="#extraproperties">extra properties</a> for more details.</li>
  *
+ * Project 的 extra 属性。每个Project都维护一个额外属性 Map，一旦定义了，该范围所有的属性都是可读可写的。详解见下 extra properties
+ *
+ *
  * <li>The <em>extensions</em> added to the project by the plugins. Each extension is available as a read-only property with the same name as the extension.</li>
+ *
+ * 通过 plugins 向 Project 添加 extensions，每个 extension 都可用作与扩展同名的只读属性   ？？？？
  *
  * <li>The <em>convention</em> properties added to the project by the plugins. A plugin can add properties and methods
  * to a project through the project's {@link Convention} object.  The properties of this scope may be readable or writable, depending on the convention objects.</li>
+ *
+ * 通过 Plugin 向 Project 添加 convention，Plugin 可以通过 Project 的 Convention 对象向 Project 添加 属性 和 方法，该范围内的属性的可读、可写性取决于 convention 对象。
+ *
  *
  * <li>The tasks of the project.  A task is accessible by using its name as a property name.  The properties of this
  * scope are read-only. For example, a task called <code>compile</code> is accessible as the <code>compile</code>
  * property.</li>
  *
+ * Project 的 Task，task 的 name 可以作为 属性 来访问 Task，该属性是只读的，比如通过 compile 属性访问名字为 compile 的 Task。
+ *
  * <li>The extra properties and convention properties are inherited from the project's parent, recursively up to the root
  * project. The properties of this scope are read-only.</li>
+ *
+ * 额外的属性 和 约定属性 从 Project 的父级  **继承** ，递归地直到根项目。 此范围的属性是只读的
+ * 重要： 比如在根项目目录的 build.gradle 中定义 extra 属性，那么其子 Project 可以通过 ext.xxxx 的形式访问 extra 属性值。
+ *
  *
  * </ul>
  *
  * <p>When reading a property, the project searches the above scopes in order, and returns the value from the first
  * scope it finds the property in. If not found, an exception is thrown. See {@link #property(String)} for more details.</p>
+ *
+ * 当访问一个 属性时， Project 会按照上面的顺序搜索该属性，返回第一个获取到的属性，如果没有找到，会抛出异常。
+ *
  *
  * <p>When writing a property, the project searches the above scopes in order, and sets the property in the first scope
  * it finds the property in. If not found, an exception is thrown. See {@link #setProperty(String, Object)} for more details.</p>
@@ -168,6 +222,13 @@ import java.util.concurrent.Callable;
  * All extra properties must be defined through the &quot;ext&quot; namespace. Once an extra property has been defined,
  * it is available directly on the owning object (in the below case the Project, Task, and sub-projects respectively) and can
  * be read and updated. Only the initial declaration that needs to be done via the namespace.
+ *
+ * 所有的 extra properties 必须定义在 ext 代码块中，一旦 extra property 被定义了，那么可以直接在所在对象上访问（Project、Task、子 Project 中），只有在定义时才需要在 ext 命名空间下：
+ *
+ *
+ * ext {
+ *   xxxx = xxx
+ * }
  *
  * <pre>
  * project.ext.prop1 = "foo"
@@ -179,6 +240,8 @@ import java.util.concurrent.Callable;
  *
  * Reading extra properties is done through the &quot;ext&quot; or through the owning object.
  *
+ * 读取额外的属性是通过 “ext” 关键字来完成的。 或通过其所在对象。
+ *
  * <pre>
  * ext.isSnapshot = version.endsWith("-SNAPSHOT")
  * if (isSnapshot) {
@@ -186,31 +249,41 @@ import java.util.concurrent.Callable;
  * }
  * </pre>
  *
- * <h4>Dynamic Methods</h4>
+ * <h4>Dynamic Methods</h4>  动态方法
  *
- * <p>A project has 5 method 'scopes', which it searches for methods:</p>
+ * <p>A project has 5 method 'scopes', which it searches for methods:</p>  有 5 中方法范围
  *
  * <ul>
  *
- * <li>The <code>Project</code> object itself.</li>
+ * <li>The <code>Project</code> object itself.</li>  Project 中的方法
  *
- * <li>The build file. The project searches for a matching method declared in the build file.</li>
+ * <li>The build file. The project searches for a matching method declared in the build file.</li>  构建文件。会在构建文件中声明的方法中搜索相关方法
  *
- * <li>The <em>extensions</em> added to the project by the plugins. Each extension is available as a method which takes
+ * <li>The <em>extensions（扩展）</em> added to the project by the plugins. Each extension is available as a method which takes
  * a closure or {@link org.gradle.api.Action} as a parameter.</li>
  *
+ * 通过插件向 Project 中添加扩展 (extensions), 每个扩展都可以作为一个参数为闭包或者 Action 的方法。   扩展是什么？？？？
+ *
  * <li>The <em>convention</em> methods added to the project by the plugins. A plugin can add properties and method to
- * a project through the project's {@link Convention} object.</li>
+ * a project through the project's {@link Convention} object.</li> Plugin 可以通过 Convention 对象向 Project 添加属性和方法
  *
  * <li>The tasks of the project. A method is added for each task, using the name of the task as the method name and
  * taking a single closure or {@link org.gradle.api.Action} parameter. The method calls the {@link Task#configure(groovy.lang.Closure)} method for the
  * associated task with the provided closure. For example, if the project has a task called <code>compile</code>, then a
  * method is added with the following signature: <code>void compile(Closure configureClosure)</code>.</li>
  *
+ * Project 的 Task，为每一个 Task 添加一个方法，task 的名称作为该方法的名字，并且使用 Action 或者 闭包 作为方法参数，该方法会调用 Task#configure(groovy.lang.Closure) 用来关联相应的 Task，举个例子：如何 Project 中存在 compile 的 Task，那么该方法为： void compile(Closure configureClosure)
+ *
+ *
+ *
  * <li>The methods of the parent project, recursively up to the root project.</li>
+ *
+ * 父项目的方法，递归到根项目
  *
  * <li>A property of the project whose value is a closure. The closure is treated as a method and called with the provided parameters.
  * The property is located as described above.</li>
+ *
+ * Project 中的属性，它的值为一个闭包，该闭包被视为一个方法，并使用提供的参数调用。
  *
  * </ul>
  */

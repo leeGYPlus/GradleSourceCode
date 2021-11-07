@@ -68,6 +68,7 @@ public class BuildSourceBuilder {
         this.publicBuildPath = publicBuildPath;
     }
 
+    // TODO: 2021/5/31 在 setting.gradle 的同级目录查找 buildSrc 目录并进行编译，这样可以保证在构建 setting.gradle 时可以使用到 buildSrc 目录下的内容   --> buildSrc 目录编译时机早于 setting.gradle
     public ClassLoaderScope buildAndCreateClassLoader(File rootDir, StartParameter containingBuildParameters) {
         File buildSrcDir = new File(rootDir, DefaultSettings.DEFAULT_BUILD_SRC_DIR);
         ClassPath classpath = createBuildSourceClasspath(buildSrcDir, containingBuildParameters);

@@ -38,6 +38,9 @@ public class BuildLayoutFactory {
 
     /**
      * Determines the layout of the build, given a current directory and some other configuration.
+     *
+     * 确认 build 文件的位置，返回当前的目录和一些其他的配置
+     *
      */
     public BuildLayout getLayoutFor(BuildLayoutConfiguration configuration) {
         if (configuration.isUseEmptySettings()) {

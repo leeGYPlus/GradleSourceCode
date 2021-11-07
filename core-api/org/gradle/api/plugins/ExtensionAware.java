@@ -19,7 +19,7 @@ package org.gradle.api.plugins;
  * Objects that can be extended at runtime with other objects.
  *
  * <pre class='autoTested'>
- * // Extensions are just plain objects, there is no interface/type
+ * // Extensions are just plain objects, there is no interface/type  Extensions 只是简单的类
  * class MyExtension {
  *   String foo
  *
@@ -28,11 +28,11 @@ package org.gradle.api.plugins;
  *   }
  * }
  *
- * // Add new extensions via the extension container
+ * // Add new extensions via the extension container  通过 extensionContainer 添加新的 extensions
  * project.extensions.create('custom', MyExtension, "bar")
  * //                       («name»,   «type»,       «constructor args», …)
  *
- * // extensions appear as properties on the target object by the given name
+ * // extensions appear as properties on the target object by the given name // extensions 表现为 Project 给定名称的属性。
  * assert project.custom instanceof MyExtension
  * assert project.custom.foo == "bar"
  *
@@ -43,12 +43,16 @@ package org.gradle.api.plugins;
  * }
  * assert project.custom.foo == "other"
  *
- * // Extensions added with the extension container's create method are themselves extensible
+ * // Extensions added with the extension container's create method are themselves extensible //  Extensions 是可以扩展自己的，可以为自己添加新的 Extensions，具体如下：
+ *
  * assert project.custom instanceof ExtensionAware
  * project.custom.extensions.create("nested", MyExtension, "baz")
  * assert project.custom.nested.foo == "baz"
  *
- * // All extension aware objects have a special “ext” extension of type ExtraPropertiesExtension
+ * // All extension aware objects have a special “ext” extension of type ExtraPropertiesExtension
+ *
+ * 所有扩展感知对象都有一个特殊的 ext 扩展，类型为 ExtraPropertiesExtension
+ *
  * assert project.hasProperty("myProperty") == false
  * project.ext.myProperty = "myValue"
  *

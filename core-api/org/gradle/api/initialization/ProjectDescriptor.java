@@ -23,9 +23,13 @@ import java.util.Set;
  * <p>A {@code ProjectDescriptor} declares the configuration required to create and evaluate a {@link
  * org.gradle.api.Project}.</p>
  *
+ * ProjectDescriptor 为声明创建和计算 Project 的配置。
+ *
+ *
  * <p> A {@code ProjectDescriptor} is created when you add a project to the build from the settings script, using {@link
  * Settings#include(String...)} or {@link Settings#includeFlat(String...)}. You can access the descriptors using one of
  * the lookup methods on the {@link Settings} object.</p>
+ * ProjectDescriptor 创建时机：在 setting.gradle 中，通过 Settings 的 include 或者 includeFlat 将一个 Project 添加到构建过程时，可以通过 Setting 对象获取到ProjectDescriptor 对象。
  */
 public interface ProjectDescriptor {
     /**

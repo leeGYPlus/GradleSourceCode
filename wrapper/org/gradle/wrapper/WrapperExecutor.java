@@ -104,7 +104,9 @@ public class WrapperExecutor {
     }
 
     public void execute(String[] args, Install install, BootstrapMainStarter bootstrapMainStarter) throws Exception {
+        // 1、下载 gradle wrapper 需要的依赖与源码。
         File gradleHome = install.createDist(config);
+        // 2、从这里开始执行 gradle 的构建流程。
         bootstrapMainStarter.start(args, gradleHome);
     }
 

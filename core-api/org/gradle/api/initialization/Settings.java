@@ -40,6 +40,8 @@ import java.io.File;
  * #DEFAULT_SETTINGS_FILE}</code> settings file. Before Gradle assembles the projects for a build, it creates a
  * <code>Settings</code> instance and executes the settings file against it.</p>
  *
+ * Setting 实例对象和 setting.gradle 是一一对应的。在 Gradle 构建项目之前，会首先创建 Setting 实例对象，依照 setting.gradle 对该 Setting 对象进行配置
+ *
  * <h3>Assembling a Multi-Project Build</h3>
  *
  * <p>One of the purposes of the <code>Settings</code> object is to allow you to declare the projects which are to be
@@ -48,8 +50,12 @@ import java.io.File;
  * root project's name defaults to the name of the directory containing the settings file. The root project's project
  * directory defaults to the directory containing the settings file.</p>
  *
+ * 可以在 setting.gradle 中通过 include 的方式添加 Project。构建中总包含根项目，在 Setting 对象创建时，它会被自动添加到。
+ *
  * <p>When a project is included in the build, a {@link ProjectDescriptor} is created. You can use this descriptor to
  * change the default values for several properties of the project.</p>
+ *
+ * 当一个项目被包含在构建中，一个 {@link ProjectDescriptor} 被创建。您可以使用此描述符更改项目的几个属性的默认值。
  *
  * <h3>Using Settings in a Settings File</h3>
  *
@@ -58,15 +64,17 @@ import java.io.File;
  * <p>In addition to the properties of this interface, the {@code Settings} object makes some additional read-only
  * properties available to the settings script. This includes properties from the following sources:</p>
  *
+ * 除了这个接口的属性外，{@code Settings} 对象还为 setting.gradle 提供了一些额外的只读属性，
+ *
  * <ul>
  *
  * <li>Defined in the {@value org.gradle.api.Project#GRADLE_PROPERTIES} file located in the settings directory of the
- * build.</li>
+ * build.(在项目根目录的 gradle.properties 中定义的属性)</li>
  *
  * <li>Defined the {@value org.gradle.api.Project#GRADLE_PROPERTIES} file located in the user's {@code .gradle}
  * directory.</li>
- *
- * <li>Provided on the command-line using the -P option.</li>
+ * 在用户的 .gradle 目录下的 gradle.properties 定义的属性。
+ * <li>Provided on the command-line using the -P option.  通过命令行 —P 提供的属性</li>
  *
  * </ul>
  */
@@ -136,6 +144,8 @@ public interface Settings extends PluginAware, ExtensionAware {
     /**
      * Returns the build script handler for settings. You can use this handler to query details about the build
      * script for settings, and manage the classpath used to compile and execute the settings script.
+     *
+     * 您可以使用该对象查询关于设置的构建脚本的详细信息，并管理用于编译和执行设置脚本的类路径。
      *
      * @return the classpath handler. Never returns null.
      *

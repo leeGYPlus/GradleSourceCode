@@ -41,6 +41,7 @@ public class DefaultGradlePropertiesLoader implements IGradlePropertiesLoader {
         loadProperties(settingsDir, startParameter, getAllSystemProperties(), getAllEnvProperties());
     }
 
+    // TODO: 2021/5/31  
     void loadProperties(File settingsDir, StartParameter startParameter, Map<String, String> systemProperties, Map<String, String> envProperties) {
         defaultProperties.clear();
         overrideProperties.clear();

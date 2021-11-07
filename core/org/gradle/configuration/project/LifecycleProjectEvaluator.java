@@ -98,16 +98,22 @@ public class LifecycleProjectEvaluator implements ProjectEvaluator {
                     // Note: beforeEvaluate and afterEvaluate ops do not throw, instead mark state as failed
                     try {
                         state.toBeforeEvaluate();
+                        // TODO: 2021/6/17 BeforeEvaluate 的回调 
                         buildOperationExecutor.run(new NotifyBeforeEvaluate(project, state));
 
                         if (!state.hasFailure()) {
                             state.toEvaluate();
                             try {
+                                // TODO: 2021/6/17 执行真正的配置阶段
+                                /**
+                                 * {@link ConfigureActionsProjectEvaluator#evaluate}1
+                                 */
                                 delegate.evaluate(project, state);
                             } catch (Exception e) {
                                 addConfigurationFailure(project, state, e, context);
                             } finally {
                                 state.toAfterEvaluate();
+                                // TODO: 2021/6/17  AfterEvaluate 的回调 
                                 buildOperationExecutor.run(new NotifyAfterEvaluate(project, state));
                             }
                         }

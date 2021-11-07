@@ -65,7 +65,11 @@ public class TaskPathProjectEvaluator implements ProjectConfigurer {
 
     @Override
     public void configureHierarchyFully(ProjectInternal project) {
+        // TODO: 2021/6/17 配置主项目 
         configureFully(project);
+        /**
+         * 遍历所有的子 project，配置子 project
+         */
         for (Project sub : project.getSubprojects()) {
             configureFully((ProjectInternal) sub);
         }
